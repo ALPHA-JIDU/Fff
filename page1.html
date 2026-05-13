@@ -94,8 +94,22 @@ body{background:var(--primary-dark);background-image:radial-gradient(at 0% 0%,hs
 <script>
 const questions=[{q:"Which character has the highest HP in Free Fire?",o:["Alok","K","Chrono","Skyler"],a:1},{q:"What is the max squad size?",o:["3","4","5","6"],a:1},{q:"Best weapon for close range?",o:["M4A1","MP40","SCAR","AWM"],a:1},{q:"What does Gloo Wall do?",o:["Heal","Shield","Damage","Speed"],a:1},{q:"Which skill revives teammates?",o:["Alok","K","Clu","Hayato"],a:1},{q:"What is the drop height damage?",o:["10%","20%","30%","40%"],a:1},{q:"Fastest vehicle?",o:["Monster Truck","Sports Car","Motorcycle","Jet Ski"],a:1},{q:"What gives shield in Clash Squad?",o:["Armor Plate","Medkit","Gloo Wall","Vest"],a:1},{q:"Character with wall penetration?",o:["Xayne","Laura","Luqueta","Wukong"],a:0},{q:"Max grenades per slot?",o:["2","3","4","5"],a:1},{q:"What heals over time?",o:["Medkit","First Aid","Painkiller","Bandage"],a:2},{q:"Best sniper scope?",o:["2x","4x","8x","Red Dot"],a:1},{q:"What reduces recoil?",o:["Foregrip","Muzzle","Stock","Magazine"],a:0},{q:"Character with drone?",o:["Wukong","Clu","K","Alok"],a:1},{q:"Zone damage per tick?",o:["2 HP","5 HP","10 HP","15 HP"],a:1},{q:"What is headshot multiplier?",o:["2x","2.5x","3x","4x"],a:0},{q:"Fastest healing item?",o:["Medkit","First Aid","Bandage","Painkiller"],a:1},{q:"What blocks bullets?",o:["Gloo Wall","Vest","Helmet","Shield"],a:0},{q:"Max ammo for AR?",o:["200","300","400","500"],a:1},{q:"Character speed boost?",o:["Kelly","Hayato","Alok","Chrono"],a:0}];
 let currentQuestions=[],currentQ=0,score=0,timeLeft=60,selectedAnswer=-1,timerInterval,token,level;
-function init(){token=sessionStorage.getItem('elite_quiz_token');level=sessionStorage.getItem('quiz_level')||'easy';if(!token){showError();return;}setTimeout(verifyToken,500);}
-function verifyToken(){setTimeout(()=>{showQuiz();},2000);}
+function init() {
+    token = sessionStorage.getItem('elite_quiz_token');
+    const expiry = parseInt(sessionStorage.getItem('token_expiry'));
+    level = sessionStorage.getItem('quiz_level') || 'easy';
+    
+    // CHECK 30s EXPIRY
+    if (!token || !expiry || Date.now() > expiry) {
+        showError();
+        return;
+    }
+    
+    // Token valid - show preloader for 2s
+    setTimeout(() => {
+        showQuiz();
+    }, 2000);
+}
 function showError(){document.getElementById('preloader').classList.remove('active');document.getElementById('errorPopup').classList.add('active');}
 function showQuiz(){document.getElementById('preloader').classList.remove('active');document.getElementById('quizContainer').classList.add('active');shuffleQuestions();startTimer();}
 function shuffleQuestions(){currentQuestions=questions.sort(()=>Math.random()-0.5).slice(0,10);loadQuestion();}

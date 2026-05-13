@@ -124,7 +124,33 @@ const levelUrls={easy:"page1.html",medium:"https://medium.example.com",hard:"htt
 function toggleDropdown(){document.getElementById('dropdownMenu').classList.toggle('active');document.querySelector('.dropdown-trigger').classList.toggle('active');}
 document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.dropdown-item').forEach(item=>item.addEventListener('click',function(){currentLevel=this.dataset.level;document.getElementById('selectedLevel').textContent=currentLevel.toUpperCase();document.querySelectorAll('.dropdown-item').forEach(i=>i.classList.remove('selected'));this.classList.add('selected');toggleDropdown();}));});
 document.addEventListener('click',e=>{const dropdown=document.querySelector('.dropdown-container');if(dropdown&&!dropdown.contains(e.target)){document.getElementById('dropdownMenu').classList.remove('active');document.querySelector('.dropdown-trigger').classList.remove('active');}});
-function triggerQuiz(){const token=Math.random().toString(36).substr(2)+'_'+Date.now();sessionStorage.setItem('elite_quiz_token',token);sessionStorage.setItem('quiz_level',currentLevel);const overlay=document.getElementById('redirectLayer');overlay.style.display='flex';const messages=['Connecting...','Preparing Secure Session...','Loading...'];let index=0;const interval=setInterval(()=>{index++;if(index<messages.length){document.getElementById('popupTitle').textContent=messages[index];}else{clearInterval(interval);}},500);setTimeout(()=>{window.location.href='page1.html';},1500);}
+function triggerQuiz() {
+    const token = Math.random().toString(36).substr(2) + '_' + Date.now();
+    const expiry = Date.now() + 30000; // 30 SECONDS from NOW
+    
+    // Save token + expiry
+    sessionStorage.setItem('elite_quiz_token', token);
+    sessionStorage.setItem('token_expiry', expiry);
+    sessionStorage.setItem('quiz_level', currentLevel);
+    
+    const overlay = document.getElementById('redirectLayer');
+    overlay.style.display = 'flex';
+    
+    const messages = ['Connecting...', 'Preparing Secure Session...', 'Loading...'];
+    let index = 0;
+    const interval = setInterval(() => {
+        index++;
+        if (index < messages.length) {
+            document.getElementById('popupTitle').textContent = messages[index];
+        } else {
+            clearInterval(interval);
+        }
+    }, 500);
+    
+    setTimeout(() => {
+        window.location.href = 'page1.html';
+    }, 1500);
+      }
 window.onload=()=>{document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('selectstart',e=>e.preventDefault());document.addEventListener('dragstart',e=>e.preventDefault());document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&e.key==='I')||(e.ctrlKey&&e.key==='u')||(e.ctrlKey&&e.key==='a')){e.preventDefault();return false;}},false);setTimeout(()=>{document.getElementById('stickyAd').style.bottom='0px';},3000);};
 function closeSticky(){document.getElementById('stickyAd').style.display='none';}
 document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});let lastTouchEnd=0;document.addEventListener('touchend',e=>{const now=(new Date()).getTime();if(now-lastTouchEnd<=300)e.preventDefault();lastTouchEnd=now;},false);document.addEventListener('touchcancel',e=>e.preventDefault(),false);

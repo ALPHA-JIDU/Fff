@@ -5,130 +5,715 @@
 <meta name="theme-color" content="#948979">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elite Battle Royale Quiz</title>
+
+<!-- Preconnect external domains -->
+<link rel="preconnect" href="https://www.highperformanceformat.com">
+
+<!-- Preload font (assuming local copy) -->
+<link rel="preload" href="fonts/GFF-Latin-CdMedium.woff2" as="font" type="font/woff2" crossorigin>
+
 <style>
-@font-face{font-family:'GFF Latin CdMedium';src:url('https://raw.githubusercontent.com/ALPHA-JIDU/GFF-font/main/GFF-Latin-CdMedium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
-:root{--primary-dark:#222831;--secondary-dark:#393E46;--accent-bronze:#948979;--accent-cream:#DFD0B8;--pure-white:#fff;--glass-bg:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.15);--icon-glow:rgba(223,208,184,0.6);}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'GFF Latin CdMedium','Segoe UI',sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;}
-body{background:var(--primary-dark);background-image:radial-gradient(at 0% 0%,hsla(30,10%,80%,0.1) 0px,transparent 50%),radial-gradient(at 100% 100%,hsla(30,10%,20%,0.4) 0px,transparent 50%);color:var(--pure-white);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;position:relative;padding:1rem 0;touch-action:manipulation;}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(148,137,121,0.4);}50%{box-shadow:0 0 40px rgba(148,137,121,0.8);}}
-@keyframes spin{to{transform:rotate(360deg);}}
-@keyframes icon-glow{0%,100%{filter:drop-shadow(0 0 8px var(--icon-glow));}50%{filter:drop-shadow(0 0 16px var(--icon-glow));}}
-.scanlines{position:fixed;inset:0;background:linear-gradient(rgba(57,62,70,0) 50%,rgba(34,40,49,0.2) 50%),linear-gradient(90deg,rgba(148,137,121,0.08),rgba(223,208,184,0.03),rgba(255,255,255,0.05));background-size:100% 4px,3px 100%;pointer-events:none;opacity:0.75;z-index:1;}
-.glass{background:var(--glass-bg);backdrop-filter:blur(12px);border:1px solid var(--glass-border);}
-main{position:relative;z-index:10;width:100%;max-width:450px;padding:0 clamp(10px,4vw,20px);display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:3rem;}
-.hero-logo{padding-top:clamp(0.5rem,2vw,1rem);padding-bottom:clamp(0.25rem,1vw,0.5rem);width:100%;display:flex;justify-content:center;}
-.hero-logo img{width:clamp(200px,55vw,260px);max-width:100%;height:auto;transition:transform 0.5s;filter:drop-shadow(0 0 20px rgba(223,208,184,0.3));}
-.hero-logo img:hover{transform:scale(1.05);}
-.divider{width:clamp(70%,85%,90%);height:1px;background:linear-gradient(90deg,transparent,var(--accent-bronze),transparent);margin-bottom:1rem;opacity:0.8;}
-.headline{font-size:clamp(1.1rem,3vw,1.4rem);font-weight:900;text-transform:uppercase;letter-spacing:0.15em;background:linear-gradient(135deg,var(--accent-cream),var(--pure-white));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:1rem;}
-.disclaimer-wrapper{width:clamp(75%,85%,95%);margin-top:1.5rem;padding:1.5px;border-radius:9999px;background:linear-gradient(90deg,var(--accent-bronze),transparent,var(--accent-cream));display:flex;align-items:center;gap:0.5rem;}
-.disclaimer-content{background:var(--secondary-dark);border-radius:9999px;padding:clamp(0.6rem,2vw,0.75rem) clamp(0.8rem,3vw,1.2rem);display:flex;align-items:center;gap:0.5rem;flex:1;}
-.disclaimer-icon{width:1.2rem;height:1.2rem;color:#ffffffd6;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(148,137,121,0.5));}
-.disclaimer-text{font-size:clamp(8px,2vw,10px);color:var(--accent-cream);text-align:center;text-transform:uppercase;letter-spacing:0.18em;flex:1;}
-.reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:clamp(0.5rem,2vw,0.75rem);width:100%;max-width:400px;margin-top:2rem;justify-items:center;}
-.reward-card{border-radius:1rem;padding:clamp(0.8rem,3vw,1rem);display:flex;flex-direction:column;align-items:center;animation:float 3s ease-in-out infinite;background:var(--glass-bg);border:1px solid rgba(148,137,121,0.3);min-width:70px;aspect-ratio:1;justify-content:center;}
-.card-icon{width:2.2rem!important;height:2.2rem!important;margin-bottom:0.4rem;filter:drop-shadow(0 0 12px var(--icon-glow));display:block;animation:icon-glow 2s ease-in-out infinite;color:var(--accent-cream);}
-.card-label{font-size:clamp(8px,2.5vw,10px);font-weight:900;text-transform:uppercase;letter-spacing:0.22em;color:var(--accent-cream);text-align:center;line-height:1.1;}
-.card-number{font-size:clamp(1.8rem,6vw,2.2rem);font-weight:900;color:var(--accent-cream);text-align:center;line-height:1;margin-bottom:0.2rem;text-transform:uppercase;letter-spacing:-0.05em;}
-.reward-text{margin-top:1rem;font-size:clamp(0.9rem,2.5vw,1rem);font-weight:bold;color:var(--accent-cream);text-transform:uppercase;letter-spacing:0.15em;text-align:center;}
-.ad-section{margin-top:2rem;text-align:center;width:100%;}
-.ad-tag{font-size:clamp(9px,2.5vw,11px);color:var(--accent-bronze);text-transform:uppercase;letter-spacing:0.25em;margin-bottom:0.5rem;display:block;}
-.ad-box{width:clamp(250px,85vw,300px);height:clamp(200px,60vw,250px);max-width:100%;background:var(--secondary-dark);border-radius:1rem;border:1px solid rgba(148,137,121,0.4);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 25px 50px -12px rgba(34,40,49,0.7);margin:0 auto;}
-.rules-section{width:100%;max-width:450px;border-radius:1rem;padding:clamp(1.25rem,5vw,1.5rem);margin-top:2rem;background:var(--secondary-dark);border:1px solid rgba(148,137,121,0.2);}
-.button-74{width:100%;max-width:400px;margin-top:1.2rem;height:clamp(65px,17vw,75px);background:var(--accent-cream);border:2px solid var(--accent-bronze);border-radius:30px;box-shadow:var(--accent-bronze) 4px 4px 0 0;color:var(--primary-dark)!important;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(1.5rem,4.8vw,2rem);text-transform:uppercase;letter-spacing:0.15em;text-decoration:none;position:relative;overflow:hidden;transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);}
-.button-74:hover{background:var(--pure-white);box-shadow:var(--accent-bronze) 6px 6px 0 0,0 0 25px rgba(148,137,121,0.4);transform:translateY(-2px);}
-.button-74:active{box-shadow:var(--accent-bronze) 2px 2px 0 0;transform:translate(2px,2px);}
-.level-selector-section{width:100%;max-width:400px;margin:1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:1rem;}
-.level-title{font-size:clamp(1.3rem,4vw,1.6rem);font-weight:900;text-transform:uppercase;letter-spacing:.2em;color:var(--accent-cream);text-align:center;margin-bottom:0;}
-.dropdown-container{position:relative;width:100%;max-width:280px;}
-.dropdown-trigger{width:100%;padding:1.2rem 1.5rem;background:var(--glass-bg);border:2px solid rgba(148,137,121,.3);border-radius:1.5rem;color:var(--accent-cream);font-size:clamp(1rem,2.8vw,1.1rem);font-weight:900;text-transform:uppercase;letter-spacing:.2em;cursor:pointer;backdrop-filter:blur(12px);transition:all .3s cubic-bezier(.175,.885,.32,1.275);display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
-.dropdown-trigger::after{content:'▼';font-size:.8rem;color:var(--accent-bronze);transition:transform .3s ease;}
-.dropdown-trigger.active::after{transform:rotate(180deg);}
-.dropdown-trigger:hover{background:rgba(223,208,184,.15);border-color:var(--accent-cream);box-shadow:0 10px 25px rgba(148,137,121,.3);}
-.dropdown-menu{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--glass-bg);border:2px solid rgba(148,137,121,.3);border-radius:1.5rem;max-height:0;overflow:hidden;transition:all .6s cubic-bezier(.25,.46,.45,.94);backdrop-filter:blur(12px);z-index:20;opacity:0;transform:translateY(-10px);}
-.dropdown-menu.active{max-height:220px;opacity:1;transform:translateY(0);border-radius:1.5rem;}
-.dropdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
-.dropdown-item{padding:1.2rem 1rem;cursor:pointer;color:#222831;font-size:clamp(.85rem,2.2vw,.95rem);font-weight:900;text-transform:uppercase;letter-spacing:.15em;transition:all .3s ease;border-right:1px solid rgba(148,137,121,.2);border-bottom:1px solid rgba(148,137,121,.2);}
-.dropdown-item:nth-child(2n){border-right:none;}
-.dropdown-item:nth-child(-n+2){border-bottom:none;}
-.dropdown-item:hover{background:rgba(223,208,184,.2);color:#ffffff;padding-left:1.2rem;}
-.dropdown-item.selected{background:linear-gradient(135deg,var(--accent-cream),var(--pure-white));color:var(--primary-dark)!important;font-weight:900;}
-.sticky-ad{position:fixed;bottom:-130px;left:0;width:100%;z-index:50;display:flex;justify-content:center;transition:bottom 0.7s cubic-bezier(0.175,0.885,0.32,1.275);padding:0 1rem;}
-.sticky-content{position:relative;width:100%;max-width:clamp(280px,90vw,320px);background:var(--secondary-dark);backdrop-filter:blur(12px);border:1px solid rgba(148,137,121,0.4);border-bottom:none;border-radius:.75rem .75rem 0 0;padding:.5rem .25rem;display:flex;justify-content:center;align-items:center;}
-.close-sticky{position:absolute;top:-.75rem;right:-.5rem;background:var(--primary-dark);border:1px solid var(--accent-bronze);color:var(--accent-cream);width:1.5rem;height:1.5rem;border-radius:50%;font-size:.75rem;cursor:pointer;font-weight:bold;}
-.overlay{position:fixed;inset:0;z-index:100;background:rgba(34,40,49,0.95);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:clamp(1rem,5vw,1.25rem);}
-.popup{background:var(--glass-bg);border:1px solid rgba(148,137,121,0.4);border-radius:1.5rem;padding:clamp(1.5rem,6vw,2rem);width:100%;max-width:clamp(300px,90vw,350px);text-align:center;box-shadow:0 0 50px rgba(148,137,121,0.3);}
-.spinner{width:clamp(3rem,8vw,4rem);height:clamp(3rem,8vw,4rem);border:4px solid var(--accent-bronze);border-top-color:var(--accent-cream);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1.5rem;}
-.popup h3{font-size:clamp(1.2rem,4vw,1.5rem);font-weight:900;background:linear-gradient(135deg,var(--accent-bronze),var(--accent-cream));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic;text-transform:uppercase;margin-bottom:.5rem;letter-spacing:.12em;}
-.popup p{color:var(--accent-bronze);font-size:clamp(.75rem,2.5vw,.875rem);margin-bottom:1.5rem;letter-spacing:.08em;}
-footer{margin-top:2.5rem;margin-bottom:clamp(1rem,4vw,2rem);text-align:center;opacity:.7;font-size:clamp(8px,2vw,10px);padding:0 clamp(1rem,5vw,2rem);}
-footer a{color:var(--accent-cream);text-decoration:none;font-weight:bold;letter-spacing:.1em;}
-footer a:hover{color:var(--pure-white);}
-@media (min-width:768px){main{padding:0 2rem;}.reward-grid{grid-template-columns:repeat(3,1fr);}.button-74{min-width:120px;padding:0 25px;}}
-@media (max-width:360px){.hero-logo img{width:180px;}.button-74 span{font-size:1.1rem;}}
+@font-face {
+    font-family: 'GFF Latin CdMedium';
+    src: url('fonts/GFF-Latin-CdMedium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --primary-dark: #222831;
+    --secondary-dark: #393E46;
+    --accent-bronze: #948979;
+    --accent-cream: #DFD0B8;
+    --pure-white: #fff;
+    --glass-bg: rgba(57, 62, 70, 0.85); /* Removed backdrop-filter */
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --icon-glow: rgba(223, 208, 184, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'GFF Latin CdMedium', 'Segoe UI', sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--primary-dark);
+    background-image: 
+        radial-gradient(at 0% 0%, hsla(30, 10%, 80%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(30, 10%, 20%, 0.4) 0px, transparent 50%);
+    color: var(--pure-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 1rem 0;
+    touch-action: manipulation;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(148, 137, 121, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(148, 137, 121, 0.8); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes icon-glow {
+    0%, 100% { filter: drop-shadow(0 0 8px var(--icon-glow)); }
+    50% { filter: drop-shadow(0 0 16px var(--icon-glow)); }
+}
+
+.scanlines {
+    position: fixed;
+    inset: 0;
+    background: 
+        linear-gradient(rgba(57, 62, 70, 0) 50%, rgba(34, 40, 49, 0.2) 50%),
+        linear-gradient(90deg, rgba(148, 137, 121, 0.08), rgba(223, 208, 184, 0.03), rgba(255, 255, 255, 0.05));
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.75;
+    z-index: 1;
+}
+
+.glass {
+    background: var(--glass-bg); /* backdrop-filter removed */
+    border: 1px solid var(--glass-border);
+}
+
+main {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 450px;
+    padding: 0 clamp(10px, 4vw, 20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+.hero-logo {
+    padding-top: clamp(0.5rem, 2vw, 1rem);
+    padding-bottom: clamp(0.25rem, 1vw, 0.5rem);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-logo img {
+    width: clamp(200px, 55vw, 260px);
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.5s;
+    filter: drop-shadow(0 0 20px rgba(223, 208, 184, 0.3));
+}
+
+.hero-logo img:hover {
+    transform: scale(1.05);
+}
+
+.divider {
+    width: clamp(70%, 85%, 90%);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-bronze), transparent);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.headline {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    background: linear-gradient(135deg, var(--accent-cream), var(--pure-white));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.disclaimer-wrapper {
+    width: clamp(75%, 85%, 95%);
+    margin-top: 1.5rem;
+    padding: 1.5px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--accent-bronze), transparent, var(--accent-cream));
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.disclaimer-content {
+    background: var(--secondary-dark);
+    border-radius: 9999px;
+    padding: clamp(0.6rem, 2vw, 0.75rem) clamp(0.8rem, 3vw, 1.2rem);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.disclaimer-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #ffffffd6;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 4px rgba(148, 137, 121, 0.5));
+}
+
+.disclaimer-text {
+    font-size: clamp(8px, 2vw, 10px);
+    color: var(--accent-cream);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    flex: 1;
+}
+
+.reward-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    width: 100%;
+    max-width: 400px;
+    margin-top: 2rem;
+    justify-items: center;
+}
+
+.reward-card {
+    border-radius: 1rem;
+    padding: clamp(0.8rem, 3vw, 1rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: float 3s ease-in-out infinite;
+    background: var(--glass-bg);
+    border: 1px solid rgba(148, 137, 121, 0.3);
+    min-width: 70px;
+    aspect-ratio: 1;
+    justify-content: center;
+}
+
+.card-icon {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    margin-bottom: 0.4rem;
+    filter: drop-shadow(0 0 12px var(--icon-glow));
+    display: block;
+    animation: icon-glow 2s ease-in-out infinite;
+    color: var(--accent-cream);
+}
+
+.card-label {
+    font-size: clamp(8px, 2.5vw, 10px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent-cream);
+    text-align: center;
+    line-height: 1.1;
+}
+
+.card-number {
+    font-size: clamp(1.8rem, 6vw, 2.2rem);
+    font-weight: 900;
+    color: var(--accent-cream);
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+}
+
+.reward-text {
+    margin-top: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-weight: bold;
+    color: var(--accent-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: center;
+}
+
+.ad-section {
+    margin-top: 2rem;
+    text-align: center;
+    width: 100%;
+}
+
+.ad-tag {
+    font-size: clamp(9px, 2.5vw, 11px);
+    color: var(--accent-bronze);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.ad-box {
+    width: clamp(250px, 85vw, 300px);
+    height: clamp(200px, 60vw, 250px);
+    max-width: 100%;
+    background: var(--secondary-dark);
+    border-radius: 1rem;
+    border: 1px solid rgba(148, 137, 121, 0.4);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 25px 50px -12px rgba(34, 40, 49, 0.7);
+    margin: 0 auto;
+}
+
+.rules-section {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 1rem;
+    padding: clamp(1.25rem, 5vw, 1.5rem);
+    margin-top: 2rem;
+    background: var(--secondary-dark);
+    border: 1px solid rgba(148, 137, 121, 0.2);
+}
+
+.button-74 {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1.2rem;
+    height: clamp(65px, 17vw, 75px);
+    background: var(--accent-cream);
+    border: 2px solid var(--accent-bronze);
+    border-radius: 30px;
+    box-shadow: var(--accent-bronze) 4px 4px 0 0;
+    color: var(--primary-dark) !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: clamp(1.5rem, 4.8vw, 2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.button-74:hover {
+    background: var(--pure-white);
+    box-shadow: var(--accent-bronze) 6px 6px 0 0, 0 0 25px rgba(148, 137, 121, 0.4);
+    transform: translateY(-2px);
+}
+
+.button-74:active {
+    box-shadow: var(--accent-bronze) 2px 2px 0 0;
+    transform: translate(2px, 2px);
+}
+
+/* NEW: Difficulty Cards (Replaced Dropdown) */
+.level-selector-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.level-title {
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--accent-cream);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.difficulty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 320px;
+}
+
+.difficulty-card {
+    padding: 1.2rem 1rem;
+    background: var(--glass-bg);
+    border: 2px solid rgba(148, 137, 121, 0.3);
+    border-radius: 1.5rem;
+    color: var(--accent-cream);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.difficulty-card:hover {
+    background: rgba(223, 208, 184, 0.15);
+    border-color: var(--accent-cream);
+    box-shadow: 0 10px 25px rgba(148, 137, 121, 0.3);
+    transform: translateY(-2px);
+}
+
+.difficulty-card.selected {
+    background: linear-gradient(135deg, var(--accent-cream), var(--pure-white));
+    color: var(--primary-dark) !important;
+    border-color: var(--accent-bronze);
+    box-shadow: 0 0 20px rgba(148, 137, 121, 0.5);
+}
+
+.sticky-ad {
+    position: fixed;
+    bottom: -130px;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    transition: bottom 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0 1rem;
+}
+
+.sticky-content {
+    position: relative;
+    width: 100%;
+    max-width: clamp(280px, 90vw, 320px);
+    background: var(--secondary-dark);
+    border: 1px solid rgba(148, 137, 121, 0.4);
+    border-bottom: none;
+    border-radius: .75rem .75rem 0 0;
+    padding: .5rem .25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-sticky {
+    position: absolute;
+    top: -.75rem;
+    right: -.5rem;
+    background: var(--primary-dark);
+    border: 1px solid var(--accent-bronze);
+    color: var(--accent-cream);
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    font-size: .75rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(34, 40, 49, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 5vw, 1.25rem);
+}
+
+.popup {
+    background: var(--glass-bg);
+    border: 1px solid rgba(148, 137, 121, 0.4);
+    border-radius: 1.5rem;
+    padding: clamp(1.5rem, 6vw, 2rem);
+    width: 100%;
+    max-width: clamp(300px, 90vw, 350px);
+    text-align: center;
+    box-shadow: 0 0 50px rgba(148, 137, 121, 0.3);
+}
+
+.spinner {
+    width: clamp(3rem, 8vw, 4rem);
+    height: clamp(3rem, 8vw, 4rem);
+    border: 4px solid var(--accent-bronze);
+    border-top-color: var(--accent-cream);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+}
+
+.popup h3 {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-bronze), var(--accent-cream));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+    letter-spacing: .12em;
+}
+
+.popup p {
+    color: var(--accent-bronze);
+    font-size: clamp(.75rem, 2.5vw, .875rem);
+    margin-bottom: 1.5rem;
+    letter-spacing: .08em;
+}
+
+footer {
+    margin-top: 2.5rem;
+    margin-bottom: clamp(1rem, 4vw, 2rem);
+    text-align: center;
+    opacity: .7;
+    font-size: clamp(8px, 2vw, 10px);
+    padding: 0 clamp(1rem, 5vw, 2rem);
+}
+
+.footer-divider {
+    width: 100% !important;  /* Container width only */
+    max-width: 450px;        /* Matches your main container */
+    height: 1px !important;
+    margin: 2rem auto 1.5rem !important;
+    background :var(--accent-cream);
+    opacity: 0.9 !important;
+    border: none;
+}
+
+footer a {
+    color: var(--accent-cream);
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: .1em;
+}
+
+footer a:hover {
+    color: var(--pure-white);
+}
+
+
+.flinks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .75rem;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.flink {
+    color: var(--c);
+    text-decoration: none;
+    font-size: clamp(9px, 2vw, 11px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    padding: .4rem .8rem;
+    border: 1px solid rgba(148, 137, 121, .2);
+    border-radius: .75rem;
+    transition: all .3s;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.flink:hover {
+    color: var(--w);
+    background: var(--b);
+    border-color: var(--c);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(148, 137, 121, .3);
+}
+
+.flink:active {
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    main { padding: 0 2rem; }
+    .reward-grid { grid-template-columns: repeat(3, 1fr); }
+    .button-74 { min-width: 120px; padding: 0 25px; }
+}
+
+@media (max-width: 360px) {
+    .hero-logo img { width: 180px; }
+    .button-74 span { font-size: 1.1rem; }
+}
 </style>
 </head>
 <body>
 <div class="scanlines"></div>
 <main>
-<div class="hero-logo"><img src="https://i.ibb.co.com/ccVzVVQC/20260502-142554.png" alt="Logo"></div>
-<div class="divider"></div>
-<h2 class="headline">Only 5% Players Can Pass This Quiz</h2>
-<div class="disclaimer-wrapper">
-<div class="disclaimer-content">
-<svg class="disclaimer-icon" viewBox="0 -8 528 528" fill="currentColor"><path d="M264 56Q318 56 364 83 410 110 437 156 464 202 464 256 464 310 437 356 410 402 364 429 318 456 264 456 210 456 164 429 118 402 91 356 64 310 64 256 64 202 91 156 118 110 164 83 210 56 264 56ZM232 144L232 272 296 272 296 144 232 144ZM232 304L232 368 296 368 296 304 232 304Z"></path></svg>
-<p class="disclaimer-text">Not affiliated with Free Fire</p>
-</div>
-</div>
-<div class="reward-grid">
-<div class="reward-card" style="animation-delay:0s;"><div class="card-number">10</div><span class="card-label">Questions</span></div>
-<div class="reward-card" style="animation-delay:.3s;"><div class="card-number">60</div><span class="card-label">Sec</span></div>
-<div class="reward-card" style="animation-delay:.6s;"><div class="card-number">4</div><span class="card-label">Levels</span></div>
-</div>
-<p class="reward-text">Prove Your Skill</p>
-<div class="ad-section"><span class="ad-tag">Advertisement</span><div class="ad-box"><script>atOptions={'key':'f688f773ce3492cbfd5831e1b1c6222c','format':'iframe','height':250,'width':300,'params':{}};</script><script src="https://www.highperformanceformat.com/f688f773ce3492cbfd5831e1b1c6222c/invoke.js"></script></div></div>
-<div class="rules-section"><p style="font-size:clamp(1.1rem,4vw,1.4rem);color:#DFD0B8;text-align:center;line-height:1.6;letter-spacing:.08em;">This challenge is inspired by the popular battle royale game Free Fire. Test your knowledge about characters, bundles, gameplay mechanics, and in-game strategies. Only experienced players can score high and prove their expertise.</p></div>
-<div class="level-selector-section">
-<div class="level-title">Select Difficulty</div>
-<div class="divider"></div>
-<div class="dropdown-container">
-<div class="dropdown-trigger" onclick="toggleDropdown()"><span id="selectedLevel">EASY</span></div>
-<div class="dropdown-menu" id="dropdownMenu">
-<div class="dropdown-grid">
-<div class="dropdown-item selected" data-level="easy">EASY</div><div class="dropdown-item" data-level="medium">MEDIUM</div>
-<div class="dropdown-item" data-level="hard">HARD</div><div class="dropdown-item" data-level="hardcore">HARDCORE</div>
-</div>
-</div>
-</div>
-</div>
-<button onclick="triggerQuiz()" class="button-74" oncontextmenu="return false;"><span>Start Challenge</span></button>
-<footer><p style="text-transform:uppercase;letter-spacing:.25em;">© 2026 All Rights Reserved</p><div><a href="#" onclick="return false;">PRIVACY</a><a href="#" onclick="return false;">TERMS</a></div></footer>
+    <div class="hero-logo">
+        <img src="logo/logo.webp" alt="Logo">
+    </div>
+    <div class="divider"></div>
+    <h2 class="headline">Only 5% Players Can Pass This Quiz</h2>
+    
+    <div class="disclaimer-wrapper">
+        <div class="disclaimer-content">
+            <svg class="disclaimer-icon" viewBox="0 -8 528 528" fill="currentColor">
+                <path d="M264 56Q318 56 364 83 410 110 437 156 464 202 464 256 464 310 437 356 410 402 364 429 318 456 264 456 210 456 164 429 118 402 91 356 64 310 64 256 64 202 91 156 118 110 164 83 210 56 264 56ZM232 144L232 272 296 272 296 144 232 144ZM232 304L232 368 296 368 296 304 232 304Z"></path>
+            </svg>
+            <p class="disclaimer-text">Not affiliated with Free Fire</p>
+        </div>
+    </div>
+
+    <div class="reward-grid">
+        <div class="reward-card" style="animation-delay: 0s;">
+            <div class="card-number">10</div>
+            <span class="card-label">Questions</span>
+        </div>
+        <div class="reward-card" style="animation-delay: .3s;">
+            <div class="card-number">60</div>
+            <span class="card-label">Sec</span>
+        </div>
+        <div class="reward-card" style="animation-delay: .6s;">
+            <div class="card-number">4</div>
+            <span class="card-label">Levels</span>
+        </div>
+    </div>
+    
+    <p class="reward-text">Prove Your Skill</p>
+
+    <div class="ad-section">
+        <span class="ad-tag">Advertisement</span>
+        <div class="ad-box">
+            <script>
+                atOptions = {
+                    'key': 'f688f773ce3492cbfd5831e1b1c6222c',
+                    'format': 'iframe',
+                    'height': 250,
+                    'width': 300,
+                    'params': {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/f688f773ce3492cbfd5831e1b1c6222c/invoke.js"></script>
+        </div>
+    </div>
+
+    <div class="rules-section">
+        <p style="font-size: clamp(1.1rem, 4vw, 1.4rem); color: #DFD0B8; text-align: center; line-height: 1.6; letter-spacing: .08em;">
+            This challenge is inspired by the popular battle royale game Free Fire. Test your knowledge about characters, bundles, gameplay mechanics, and in-game strategies. Only experienced players can score high and prove their expertise.
+        </p>
+    </div>
+
+    <!-- NEW: Difficulty Cards -->
+    <div class="level-selector-section">
+        <div class="level-title">Select Difficulty</div>
+        <div class="divider"></div>
+        <div class="difficulty-grid">
+            <div class="difficulty-card selected" data-level="easy">EASY</div>
+            <div class="difficulty-card" data-level="medium">MEDIUM</div>
+            <div class="difficulty-card" data-level="hard">HARD</div>
+            <div class="difficulty-card" data-level="hardcore">HARDCORE</div>
+        </div>
+        <div id="selectedLevelDisplay" style="font-size: clamp(0.85rem, 2.2vw, 0.95rem); color: var(--accent-cream); font-weight: 900; letter-spacing: .15em; margin-top: 0.5rem;">EASY Selected</div>
+    </div>
+
+    <button onclick="triggerQuiz()" class="button-74" oncontextmenu="return false;">
+        <span>Start Challenge</span>
+    </button>
+    
+    <footer>
+   <div class="footer-divider"></div>
+    
+    <p style="text-transform: uppercase; letter-spacing: .25em; margin-bottom: 1rem;">© 2026 All Rights Reserved</p>
+    
+    <div class="flinks">
+        <a href="#" onclick="return false;" class="flink" title="Privacy Policy">Privacy</a>
+        <a href="#" onclick="return false;" class="flink" title="Terms of Service">Terms</a>
+        <a href="#" onclick="return false;" class="flink" title="Disclaimer">Disclaimer</a>
+        <a href="#" onclick="return false;" class="flink" title="About Us">About</a>
+        <a href="#" onclick="return false;" class="flink" title="Sitemap">Sitemap</a>
+        <a href="#" onclick="return false;" class="flink" title="Contact">Contact</a>
+        <a href="#" onclick="return false;" class="flink" title="Support">Support</a>
+    </div>
+ 
+</footer>
 </main>
+
 <div id="stickyAd" class="sticky-ad">
-<div class="sticky-content">
-<button onclick="closeSticky()" class="close-sticky" oncontextmenu="return false;">✕</button>
-<div style="transform:scale(.9);"><script>atOptions={'key':'cf98935e71b827c45c756e4614c046fe','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://www.highperformanceformat.com/cf98935e71b827c45c756e4614c046fe/invoke.js"></script></div>
+    <div class="sticky-content">
+        <button onclick="closeSticky()" class="close-sticky" oncontextmenu="return false;">✕</button>
+        <div style="transform: scale(.9);">
+            <script>
+                atOptions = {
+                    'key': 'cf98935e71b827c45c756e4614c046fe',
+                    'format': 'iframe',
+                    'height': 50,
+                    'width': 320,
+                    'params': {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/cf98935e71b827c45c756e4614c046fe/invoke.js"></script>
+        </div>
+    </div>
 </div>
-</div>
+
 <div id="redirectLayer" class="overlay">
-<div class="popup">
-<div class="spinner"></div>
-<h3 id="popupTitle">Connecting...</h3>
-<p>Preparing & Redirecting to the Quiz</p>
-<div class="ad-box" style="margin:0 auto;width:300px;background:var(--secondary-dark);"><script>atOptions={'key':'f688f773ce3492cbfd5831e1b1c6222c','format':'iframe','height':250,'width':300,'params':{}};</script><script src="https://www.highperformanceformat.com/f688f773ce3492cbfd5831e1b1c6222c/invoke.js"></script></div>
+    <div class="popup">
+        <div class="spinner"></div>
+        <h3 id="popupTitle">Connecting...</h3>
+        <p>Preparing & Redirecting to the Quiz</p>
+        <div class="ad-box" style="margin: 0 auto; width: 300px; background: var(--secondary-dark);">
+            <script>
+                atOptions = {
+                    'key': 'f688f773ce3492cbfd5831e1b1c6222c',
+                    'format': 'iframe',
+                    'height': 250,
+                    'width': 300,
+                    'params': {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/f688f773ce3492cbfd5831e1b1c6222c/invoke.js"></script>
+        </div>
+    </div>
 </div>
-</div>
+
 <script>
-const levelUrls={easy:"page1.html",medium:"https://medium.example.com",hard:"https://hard.example.com",hardcore:"https://hardcore.example.com"};let currentLevel='easy';
-function toggleDropdown(){document.getElementById('dropdownMenu').classList.toggle('active');document.querySelector('.dropdown-trigger').classList.toggle('active');}
-document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.dropdown-item').forEach(item=>item.addEventListener('click',function(){currentLevel=this.dataset.level;document.getElementById('selectedLevel').textContent=currentLevel.toUpperCase();document.querySelectorAll('.dropdown-item').forEach(i=>i.classList.remove('selected'));this.classList.add('selected');toggleDropdown();}));});
-document.addEventListener('click',e=>{const dropdown=document.querySelector('.dropdown-container');if(dropdown&&!dropdown.contains(e.target)){document.getElementById('dropdownMenu').classList.remove('active');document.querySelector('.dropdown-trigger').classList.remove('active');}});
+const levelUrls = {
+    easy: "page1.html",
+    medium: "https://medium.example.com",
+    hard: "https://hard.example.com",
+    hardcore: "https://hardcore.example.com"
+};
+let currentLevel = 'easy';
+
+function selectDifficulty(card) {
+    // Remove selected from all cards
+    document.querySelectorAll('.difficulty-card').forEach(c => c.classList.remove('selected'));
+    // Add selected to clicked card
+    card.classList.add('selected');
+    currentLevel = card.dataset.level;
+    // Update display
+    document.getElementById('selectedLevelDisplay').textContent = card.textContent + ' Selected';
+}
+
 function triggerQuiz() {
     const token = Math.random().toString(36).substr(2) + '_' + Date.now();
     const expiry = Date.now() + 30000; // 30 SECONDS from NOW
     
-    // Save token + expiry
     sessionStorage.setItem('elite_quiz_token', token);
     sessionStorage.setItem('token_expiry', expiry);
     sessionStorage.setItem('quiz_level', currentLevel);
@@ -149,11 +734,36 @@ function triggerQuiz() {
     
     setTimeout(() => {
         window.location.href = 'page1.html';
-    }, 1500);
-      }
-window.onload=()=>{document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('selectstart',e=>e.preventDefault());document.addEventListener('dragstart',e=>e.preventDefault());document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&e.key==='I')||(e.ctrlKey&&e.key==='u')||(e.ctrlKey&&e.key==='a')){e.preventDefault();return false;}},false);setTimeout(()=>{document.getElementById('stickyAd').style.bottom='0px';},3000);};
-function closeSticky(){document.getElementById('stickyAd').style.display='none';}
-document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});let lastTouchEnd=0;document.addEventListener('touchend',e=>{const now=(new Date()).getTime();if(now-lastTouchEnd<=300)e.preventDefault();lastTouchEnd=now;},false);document.addEventListener('touchcancel',e=>e.preventDefault(),false);
+    }, 1000);
+}
+
+window.onload = () => {
+    // Anti-right-click, devtools, etc.
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+            (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 'a')) {
+            e.preventDefault();
+            return false;
+        }
+    }, false);
+    
+    // Sticky ad
+    setTimeout(() => {
+        document.getElementById('stickyAd').style.bottom = '0px';
+    }, 3000);
+    
+    // Difficulty card listeners
+    document.querySelectorAll('.difficulty-card').forEach(card => {
+        card.addEventListener('click', () => selectDifficulty(card));
+    });
+};
+
+function closeSticky() {
+    document.getElementById('stickyAd').style.display = 'none';
+}
 </script>
 </body>
 </html>

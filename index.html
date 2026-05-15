@@ -60,6 +60,63 @@ body {
     touch-action: manipulation;
 }
 
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes preloaderFade {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes preloaderScale {
+    0% { transform: scale(1); }
+    90% { transform: scale(1); }
+    100% { transform: scale(0.95); }
+}
+
+
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--primary-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    animation: preloaderFade 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+.preloader-spinner {
+    width: clamp(3rem, 12vw, 5rem);
+    height: clamp(3rem, 12vw, 5rem);
+    border: 4px solid rgba(148, 137, 121, 0.3);
+    border-top: 4px solid var(--accent-cream);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+}
+
+.preloader-text {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-cream);
+}
+
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
@@ -107,6 +164,8 @@ main {
     align-items: center;
     min-height: 100vh;
     padding-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out 1.5s forwards;
+    opacity: 0;
 }
 
 .hero-logo {
@@ -562,6 +621,10 @@ footer a:hover {
 </style>
 </head>
 <body>
+<div class="preloader">
+    <div class="preloader-spinner"></div>
+    <div class="preloader-text">Loading...</div>
+</div>
 <div class="scanlines"></div>
 <main>
     <div class="hero-logo">
